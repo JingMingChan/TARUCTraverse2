@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/mapbox_marker_icon_default"
+        android:title="@string/title_map" />
+
+    <item
+        android:id="@+id/navigation_chatbot"
+        android:icon="@android:drawable/stat_notify_chat"
+        android:title="@string/title_chatbot" />
+
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/title_user" />
+
+</menu>
