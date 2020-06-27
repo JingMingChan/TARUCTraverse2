@@ -1,16 +1,25 @@
 package com.example.taructraverse2
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var username:EditText
-    private lateinit var password:EditText
-    private lateinit var email:EditText
+    private lateinit var usernametxt:EditText
+    private lateinit var passwordtxt:EditText
+    private lateinit var emailtxt:EditText
     private lateinit var typeSpinner: Spinner
     private lateinit var createUserBtn:Button
 
@@ -18,16 +27,42 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        username = findViewById(R.id.usernametxt)
-        password = findViewById(R.id.passwordtxt)
-        email = findViewById(R.id.emailtxt)
-
+        WolfRequest.init(this)
+        usernametxt = findViewById(R.id.usernametxt)
+        passwordtxt = findViewById(R.id.passwordtxt)
+        emailtxt = findViewById(R.id.emailtxt)
         typeSpinner = findViewById(R.id.typeSpinner)
 
         createUserBtn = findViewById(R.id.addUserBtn)
-        
+
         createUserBtn.setOnClickListener {
-            username.setText(typeSpinner.selectedItem.toString())
+
+            if(usernametxt.text.toString().isEmpty() || passwordtxt.text.toString().isEmpty() || emailtxt.text.toString().isEmpty()){
+                Toast.makeText(this,"Field cannot be left empty",Toast.LENGTH_SHORT).show()
+            }else{
+                register()
+            }
+
         }
+    }
+
+    fun register(){
+        val username = usernametxt.text.toString().trim()
+        val password = passwordtxt.text.toString().trim()
+        val email = emailtxt.text.toString().trim()
+        val type = typeSpinner.selectedItem.toString().trim()
+
+
+        WolfRequest(Constants.URL_REGISTER,{
+            Toast.makeText(this,"Success add user",Toast.LENGTH_SHORT).show()
+        },{
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        }).POST("username" to username, "password" to password, "type" to type, "email" to email)
+//        val jsonBody = JSONObject()
+//        jsonBody.put("username",username)
+//        jsonBody.put("password",password)
+//        jsonBody.put("type",type)
+//        jsonBody.put("email",email)
+
     }
 }

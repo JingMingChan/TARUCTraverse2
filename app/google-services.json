@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "31393639728",
+    "firebase_url": "https://taruc-traverse-whfplx.firebaseio.com",
+    "project_id": "taruc-traverse-whfplx",
+    "storage_bucket": "taruc-traverse-whfplx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31393639728:android:4340f1ec8381b65c32acf5",
+        "android_client_info": {
+          "package_name": "com.example.taructraverse2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31393639728-ni9tkdmdea45dqvq5ahmca0ce156fonb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi3_lIcCUEWvuett_m5Qzb-sROY-o2pzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31393639728-ni9tkdmdea45dqvq5ahmca0ce156fonb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
