@@ -54,7 +54,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
         WolfRequest(Constants.URL_REGISTER,{
-            Toast.makeText(this,"Success add user",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
         },{
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }).POST("username" to username, "password" to password, "type" to type, "email" to email)
