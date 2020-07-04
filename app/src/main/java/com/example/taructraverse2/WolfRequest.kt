@@ -11,7 +11,7 @@ class WolfRequest(val url: String,
                   val result: (JSONObject) -> Unit,
                   val error: (String) -> Unit) {
 
-    fun POST(vararg params: Pair<String, Any>) {
+    fun post(vararg params: Pair<String, Any>) {
         // HashMap to pass arguments to Volley
         val hashMap = HashMap<String, String>()
         params.forEach {

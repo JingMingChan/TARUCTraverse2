@@ -1,19 +1,11 @@
 package com.example.taructraverse2
 
-import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -28,6 +20,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         WolfRequest.init(this)
+
         usernametxt = findViewById(R.id.usernametxt)
         passwordtxt = findViewById(R.id.passwordtxt)
         emailtxt = findViewById(R.id.emailtxt)
@@ -46,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun register(){
+    private fun register(){
         val username = usernametxt.text.toString().trim()
         val password = passwordtxt.text.toString().trim()
         val email = emailtxt.text.toString().trim()
@@ -55,9 +48,13 @@ class RegisterActivity : AppCompatActivity() {
 
         WolfRequest(Constants.URL_REGISTER,{
             Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
+            if(!it.getBoolean("error")){
+                finish()
+            }
         },{
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-        }).POST("username" to username, "password" to password, "type" to type, "email" to email)
+        }).post("username" to username, "password" to password, "type" to type, "email" to email)
+
 //        val jsonBody = JSONObject()
 //        jsonBody.put("username",username)
 //        jsonBody.put("password",password)
