@@ -15,6 +15,7 @@ import com.example.taructraverse2.R
 class UserFragment : Fragment() {
 
     private lateinit var userModel: UserModel
+    private var UID :String? = null
     private lateinit var uid:TextView
 
     override fun onCreateView(
@@ -31,7 +32,7 @@ class UserFragment : Fragment() {
         })
 
         uid = root.findViewById(R.id.txtUID)
-        uid.text = (activity as MainActivity?)?.test()
+        UID = (activity as MainActivity?)?.getUID()
         return root
     }
 }

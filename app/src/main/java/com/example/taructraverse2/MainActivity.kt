@@ -16,10 +16,13 @@ import com.mapbox.android.core.permissions.PermissionsListener
 
 class MainActivity : AppCompatActivity() {
 
-    private val testString = "test"
+    private var UID :String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val extras = this.intent.extras
+        UID = extras?.getString("UID")
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -32,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    fun test():String{
-        return testString
+    fun getUID():String?{
+        return UID
     }
 
 

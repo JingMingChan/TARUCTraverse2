@@ -49,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
         WolfRequest(Constants.URL_REGISTER,{
             Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
             if(!it.getBoolean("error")){
-                finish()
+                finish()//user success register
             }
         },{
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()

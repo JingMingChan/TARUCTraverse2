@@ -1,6 +1,7 @@
 package com.example.taructraverse2.ui.map
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
@@ -15,13 +16,17 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.taructraverse2.Constants
 import com.example.taructraverse2.MainActivity
 import com.example.taructraverse2.R
+import com.example.taructraverse2.WolfRequest
 import com.mapbox.android.core.location.*
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.api.geocoding.v5.MapboxGeocoding
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
@@ -94,7 +99,13 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
             addDestinationIconSymbolLayer(it)
 
             btnSrch.setOnClickListener{
-                //locationSrch(txtLocation.toString())
+
+                if(txtLocation.text.trim().isNullOrEmpty()){
+                    Toast.makeText(context, "Please key in location address", Toast.LENGTH_LONG).show()
+                }else{
+                    getAddress(txtLocation.text.trim().toString())
+                    txtLocation.text.clear()
+                }
                 val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view!!.windowToken, 0)
             }
@@ -213,6 +224,53 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
                     Toast.makeText(activity, "Route not found", Toast.LENGTH_LONG).show()
                 }
             })
+    }
+
+    fun locationSrch(address:String){
+
+        val origin = Point.fromLngLat(map.locationComponent.lastKnownLocation!!.longitude, map.locationComponent.lastKnownLocation!!.latitude)
+
+
+        val mapboxGeocoding = MapboxGeocoding.builder()
+            .accessToken(getString(R.string.mapBox_token))
+            .query(address)
+            .autocomplete(false)
+            .build()
+
+        mapboxGeocoding.enqueueCall(object : Callback<GeocodingResponse> {
+            override fun onResponse(call: Call<GeocodingResponse>, response: Response<GeocodingResponse>) {
+
+                val results = response.body()!!.features()
+                if (results.size > 0) {
+
+                    val destination = Point.fromLngLat(results[0].center()?.longitude()!!, results[0].center()?.latitude()!!)
+                    getRoute(origin, destination)
+                    startBtn.visibility = View.VISIBLE
+                    mapboxGeocoding.cancelCall()
+
+                } else {
+
+                    Toast.makeText(context, "Location Not Exist", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GeocodingResponse>, throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(context, "Search Location Not Found", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    fun getAddress(searchResult:String){
+
+        WolfRequest(Constants.URL_LOCATION_SEARCH,{
+            Toast.makeText(context,it.getString("message"),Toast.LENGTH_SHORT).show()
+            if(!it.getBoolean("error")){
+                locationSrch(it.getString("Address"))
+            }
+        },{
+            Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+        }).post("srchTxt" to searchResult)
     }
 
     override fun onMapClick(point: LatLng): Boolean {
