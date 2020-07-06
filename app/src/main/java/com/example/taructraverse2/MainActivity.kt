@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val extras = this.intent.extras
-        UID = extras?.getString("UID")
+        UID = extras?.getInt("UID").toString()
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 

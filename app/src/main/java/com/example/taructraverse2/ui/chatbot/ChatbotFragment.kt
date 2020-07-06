@@ -66,7 +66,7 @@ class ChatbotFragment : Fragment(){
 
     fun initPresenter(){
         try {
-            val stream: InputStream = resources.openRawResource(R.raw.taruc_traverse_0d2eaf8ff0b1)
+            val stream: InputStream = resources.openRawResource(R.raw.taruc_chat)
             val credentials: GoogleCredentials = GoogleCredentials.fromStream(stream)
             val projectId: String = (credentials as ServiceAccountCredentials).projectId
             val settingsBuilder: SessionsSettings.Builder = SessionsSettings.newBuilder()

@@ -1,7 +1,6 @@
 package com.example.taructraverse2.ui.map
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
@@ -82,6 +81,7 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        context?.let { WolfRequest.init(it) }
         txtLocation = view.findViewById(R.id.editTextLocation)
         btnSrch = view.findViewById(R.id.btnSrch)
         startBtn = view.findViewById(R.id.startButton)
@@ -226,30 +226,33 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
             })
     }
 
-    fun locationSrch(address:String){
+    fun locationSrch(address:String, lat:Double, long:Double){
 
         val origin = Point.fromLngLat(map.locationComponent.lastKnownLocation!!.longitude, map.locationComponent.lastKnownLocation!!.latitude)
 
 
         val mapboxGeocoding = MapboxGeocoding.builder()
             .accessToken(getString(R.string.mapBox_token))
-            .query(address)
-            .autocomplete(false)
+            .query(address).autocomplete(true)
             .build()
 
         mapboxGeocoding.enqueueCall(object : Callback<GeocodingResponse> {
             override fun onResponse(call: Call<GeocodingResponse>, response: Response<GeocodingResponse>) {
 
                 val results = response.body()!!.features()
-                if (results.size > 0) {
+                if (results.size == 1) {//address is found one and only one, use mapbox geocoding point
 
                     val destination = Point.fromLngLat(results[0].center()?.longitude()!!, results[0].center()?.latitude()!!)
                     getRoute(origin, destination)
                     startBtn.visibility = View.VISIBLE
                     mapboxGeocoding.cancelCall()
 
-                } else {
-
+                }else if(results.size > 1) {//if more than 1 address found on mapboxgeocoding, use own db point to query
+                    val destination = Point.fromLngLat(long, lat)
+                    getRoute(origin, destination)
+                    startBtn.visibility = View.VISIBLE
+                    mapboxGeocoding.cancelCall()
+                }else{
                     Toast.makeText(context, "Location Not Exist", Toast.LENGTH_LONG).show()
                 }
             }
@@ -264,14 +267,16 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
     fun getAddress(searchResult:String){
 
         WolfRequest(Constants.URL_LOCATION_SEARCH,{
-            Toast.makeText(context,it.getString("message"),Toast.LENGTH_SHORT).show()
             if(!it.getBoolean("error")){
-                locationSrch(it.getString("Address"))
+                locationSrch(it.getString("address").toString(), it.getDouble("latitude"),it.getDouble("longitude"))
+            }else{
+                Toast.makeText(context, it.getString("message"), Toast.LENGTH_LONG).show()
             }
         },{
             Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
         }).post("srchTxt" to searchResult)
     }
+
 
     override fun onMapClick(point: LatLng): Boolean {
         val origin = Point.fromLngLat(map.locationComponent.lastKnownLocation!!.longitude, map.locationComponent.lastKnownLocation!!.latitude)

@@ -17,6 +17,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        WolfRequest.init(this)
         loginBtn = findViewById(R.id.loginBtn)
         registerBtn = findViewById(R.id.registBtn)
         userName = findViewById(R.id.username)
