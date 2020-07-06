@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "taruc-traverse-whfplx",
+  "private_key_id": "dc96eb65bae9af85f016af477b210e0f85554d6d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCdGHkrWM17vSfR\nOcNs6FymUpi/IBmjsyH/KD4MJmXalMy6+jwOxUhbUFnmcFGrVVOvPhCTxBIFzIpp\na5aMRFyA7nXk4PWuWGZPxnRRX665WgwPXETkN+asbUAp8gdfq45buJV1G0omAWkm\nS7eNcNfSDTCgzIbzTR7JPcFBG1LXfmQh2wc2o+Ofpqu6R+NRLm4Irp9psqSR0BEJ\n0sa/4e+3bI1KVbjyGg+aT1EkZD2+lZV5Ur0YV1BV1bWt1hHVM6HTklsvA5Swcrpy\nZI5GZMh2ZdrSNW2qzg+VJLeI0dB04Ast4xxAjskZFNJHEPVVa6h73Z2eiN/7KNhx\neWWEDAnFAgMBAAECggEAHZuX9LU9LyHYsAx+ulc15QwCqVzzsCBqGyS6wv/2qOJs\nDp5sdM02ZK1pcC7BmbTQe6ILLkphKjIhcRp7qo6Uz6EB28QRUc1r5QOudwq9S8Y+\nqSN3AXtOsLc7hVxOCvgysbNBiet9h1mzN2pEWzZGGtrtDBVYJuFlWMDYnDx52c63\nAFrkkmHF4N/LZiLzHqjpdh+I64nc+UX8bBWJJG0B4rdr6VoN2K6A0Bbim1+Hfxrw\nBf9Tejylt1VoyxzFEYOAzZwsSlsBxTH7UZWeYDZPLoI1SizJZEFHAwT2P1cGoOMd\n7uEx3L4GbHHmk8xBR2p6Kji8jELtBLKHrJztoE6yaQKBgQDS/GaaK3706EPVzSfy\nHQ6fpSQpbw9sA1TD5S5k42qMryc0U8GCDtSaqkuB7mMl5u/7ewinMMu+EipA8Lov\nLAF7uQT5yK3p1mcb8Lx1mKxozVITs6kU4fYHwx83sy7XaFTSQuvpQ3JMj7FLSHs6\nP3XAzW2r0AmQWTnqOrQCia3YaQKBgQC+nLKe1OMnW2AdaouCTtLX9U+L/ld1HVMi\nxzNgEwtvaU2BcgXIVNjAAnuPHxQl5ZjCXQUTBwfBlO2ITazhIGN26p6Ahi3Jz9km\nyvcRVwkuPQU2NPd/c+6Ry9spTvG8m/If4D4XizsAdQIyzquYTejl28w5zuGblw/H\nRbpPFN6a/QKBgQCPzTAxTAwP6G6zvkzHnD5nWSs4glXEjNCtY/snEEmC8a6K37s4\nZdtKP1+Pg2dYYfqXMNhI+90iA0eBU5HSrO+l4AkgJkNC6bsFNCN/EzwPgkG64+0O\nKqSBzd/tGteGQbnuRWZ9albxD88LPK+gl7guXNWvEPAzzlzG5JPkVuqCYQKBgCxp\nilzjsYGsErsH5jWYdBwJdl1iB7KsAIDr9RZ/mXx+BqcQkDRbQJ2MdomkbideVbeD\nwPjr/GyobKgDoTJbP5GnnQLJQMXy/d/CDsslgmgZo6s7sCcsNfwWiZwYXs7ZbxLq\nRs1pjXfPy5FXAjhcftV/3xfhEkQUcIK3xm9Cp5NpAoGAAnMSoO7PN2saT7u0i/83\nYYP1yDZwWEde3AL0H4Ut2XOS7t3qgE9BOgWM2iTwmP2DMuxAtmSVEsREW/NiSnsP\naG9hwCey+LhziJJJUjwHa6ObfJBf99E2mQ8rPWUhCHevgWXezGdKMOGIDoHbJBfg\nwPyqoLM5Wuv6J6GsNRJ/olk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "dialogflow-usmnri@taruc-traverse-whfplx.iam.gserviceaccount.com",
+  "client_id": "106162713923958650089",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dialogflow-usmnri%40taruc-traverse-whfplx.iam.gserviceaccount.com"
+}
