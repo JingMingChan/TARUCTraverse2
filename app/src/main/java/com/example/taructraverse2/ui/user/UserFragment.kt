@@ -23,6 +23,8 @@ class UserFragment : Fragment() {
     private lateinit var username:TextView
     private lateinit var email:TextView
     private lateinit var logout:Button
+    private lateinit var updateProfile:Button
+    private lateinit var updateMap:Button
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -36,17 +38,35 @@ class UserFragment : Fragment() {
         userModel.text.observe(viewLifecycleOwner, Observer {
 
         })
+        context?.let { WolfRequest.init(it) }
 
         uid = root.findViewById(R.id.txtUID)
         username = root.findViewById(R.id.txtUserName)
         email = root.findViewById(R.id.txtEmail)
         logout = root.findViewById(R.id.btnLogOut)
+        updateMap = root.findViewById(R.id.updateMapBtn)
+        updateProfile = root.findViewById(R.id.updateProfileBtn)
+
+        UID = (activity as MainActivity?)?.getUID()
+        updateMap.setOnClickListener {
+
+        }
+
+
         logout.setOnClickListener {
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
-            MainActivity().finish()
+            activity?.finish()
         }
-        UID = (activity as MainActivity?)?.getUID()
+
+        updateProfile.setOnClickListener {
+            val intent = Intent(context, RegisterActivity::class.java)
+            intent.putExtra("UID",UID)//0 why????
+            startActivity(intent)
+        }
+
+
+
         if(uid.text.trim().toString().isNullOrEmpty() || username.text.trim().toString().isNullOrEmpty() || email.text.trim().toString().isNullOrEmpty()){
 
             WolfRequest(Constants.URL_RETRIEVE_USER,{
@@ -56,6 +76,9 @@ class UserFragment : Fragment() {
                     uid.text = it.getString("id")
                     username.text = it.getString("username")
                     email.text = it.getString("email")
+                    if(it.getString("type") =="Staff"){
+                        updateMap.visibility = View.VISIBLE
+                    }
                 }
             },{
                 Toast.makeText(context,it, Toast.LENGTH_SHORT).show()
@@ -63,4 +86,5 @@ class UserFragment : Fragment() {
         }
         return root
     }
+
 }

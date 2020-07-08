@@ -1,5 +1,6 @@
 package com.example.taructraverse2.ui.map
 
+import android.Manifest
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -302,6 +303,7 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         permissionManager.onRequestPermissionsResult(requestCode,permissions,grantResults)
+
     }
 
     override fun onStart() {

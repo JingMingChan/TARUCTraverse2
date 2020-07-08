@@ -1,42 +1,128 @@
 package com.example.taructraverse2
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var usernametxt:EditText
     private lateinit var passwordtxt:EditText
+    private lateinit var passwordtxt2:EditText
     private lateinit var emailtxt:EditText
     private lateinit var typeSpinner: Spinner
     private lateinit var createUserBtn:Button
+    private lateinit var saveEditBtn:Button
+    private lateinit var txtUID:TextView
+    private lateinit var chkBoxUsername:CheckBox
+    private lateinit var chkBoxPass:CheckBox
+    private lateinit var chkBoxEmail:CheckBox
+    private var UID :String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val extras = this.intent.extras
+        UID = extras?.getString("UID")
+        if(!UID.isNullOrEmpty()){
+            title = "Edit Proflie";
+        }
+
         setContentView(R.layout.activity_register)
 
         WolfRequest.init(this)
 
         usernametxt = findViewById(R.id.usernametxt)
         passwordtxt = findViewById(R.id.passwordtxt)
+        passwordtxt2 = findViewById(R.id.passwordtxt2)
         emailtxt = findViewById(R.id.emailtxt)
         typeSpinner = findViewById(R.id.typeSpinner)
 
-        createUserBtn = findViewById(R.id.addUserBtn)
 
-        createUserBtn.setOnClickListener {
 
-            if(usernametxt.text.toString().isEmpty() || passwordtxt.text.toString().isEmpty() || emailtxt.text.toString().isEmpty()){
-                Toast.makeText(this,"Field cannot be left empty",Toast.LENGTH_SHORT).show()
-            }else{
-                register()
+        if(!UID.isNullOrEmpty()){
+
+            saveEditBtn=findViewById(R.id.saveBtn)
+            saveEditBtn.visibility=View.VISIBLE
+
+            chkBoxUsername=findViewById(R.id.checkBoxUserName)
+            chkBoxPass=findViewById(R.id.checkBoxPassword)
+            chkBoxEmail=findViewById(R.id.checkBoxEmail)
+            chkBoxUsername.visibility = View.VISIBLE
+            chkBoxPass.visibility = View.VISIBLE
+            chkBoxEmail.visibility = View.VISIBLE
+            showProfile()
+            saveEditBtn.setOnClickListener {
+
+                if(!chkBoxUsername.isChecked && !chkBoxPass.isChecked && !chkBoxEmail.isChecked){
+                    Toast.makeText(this,"Please check at least one field to update",Toast.LENGTH_SHORT).show()
+                }else{
+                    var message:String =""
+                    if(chkBoxUsername.isChecked){
+                        if(usernametxt.text.trim().toString().isNullOrEmpty()){
+                            message +="Username checked: Field cannot be left empty \n"
+                        }else{
+                            WolfRequest(Constants.URL_RETRIEVE_USER,{
+                                message +=it.getString("message")+"\n"
+                            },{
+                                message +=it+"\n"
+                            }).post("UID" to UID, "username" to usernametxt.text.toString().trim())
+                        }
+                    }
+
+                    if(chkBoxEmail.isChecked){
+                        if(emailtxt.text.trim().toString().isNullOrEmpty()){
+                            message +="Email checked: Field cannot be left empty \n"
+                        }else{
+                            WolfRequest(Constants.URL_RETRIEVE_USER,{
+                                message +=it.getString("message")+"\n"
+                            },{
+                                message +=it+"\n"
+                            }).post("UID" to UID, "email" to emailtxt.text.toString().trim())
+                        }
+                    }
+
+                    if(chkBoxPass.isChecked){
+                        if(passwordtxt.text.trim().toString().isNullOrEmpty() || passwordtxt2.text.trim().toString().isNullOrEmpty()){
+                            message +="Password checked: Field cannot be left empty \n"
+                        }else{
+
+                            if(passwordtxt.text.trim() == passwordtxt2.text.trim()){
+                                WolfRequest(Constants.URL_RETRIEVE_USER,{
+                                    message +=it.getString("message")+"\n"
+                                },{
+                                    message +=it+"\n"
+                                }).post("UID" to UID, "password" to passwordtxt.text.toString().trim())
+                            }else{
+                                message +="Confirmation password Failed: Please checked Password \n"
+                            }
+                        }
+                    }
+                    if (message != ""){
+                        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+                    }
+
+                }
+
             }
+        }else{
+            createUserBtn = findViewById(R.id.addUserBtn)
+            createUserBtn.setOnClickListener {
 
+                if(usernametxt.text.toString().isEmpty() || passwordtxt.text.toString().isEmpty() || passwordtxt2.text.toString().isEmpty() || emailtxt.text.toString().isEmpty()){
+                    Toast.makeText(this,"Field cannot be left empty",Toast.LENGTH_SHORT).show()
+                }else{
+                    if(passwordtxt.text.trim() == passwordtxt2.text.trim()){
+                       register()
+                    }else{
+                        Toast.makeText(this,"Confirmation password is not the same",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+
+            }
         }
+
     }
 
     private fun register(){
@@ -44,7 +130,6 @@ class RegisterActivity : AppCompatActivity() {
         val password = passwordtxt.text.toString().trim()
         val email = emailtxt.text.toString().trim()
         val type = typeSpinner.selectedItem.toString().trim()
-
 
         WolfRequest(Constants.URL_REGISTER,{
             Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
@@ -55,11 +140,29 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }).post("username" to username, "password" to password, "type" to type, "email" to email)
 
-//        val jsonBody = JSONObject()
-//        jsonBody.put("username",username)
-//        jsonBody.put("password",password)
-//        jsonBody.put("type",type)
-//        jsonBody.put("email",email)
+    }
+
+    private fun showProfile(){
+        txtUID = findViewById(R.id.uid)
+        WolfRequest(Constants.URL_RETRIEVE_USER,{
+            Toast.makeText(this,it.getString("message"), Toast.LENGTH_SHORT).show()
+            if(!it.getBoolean("error")){
+                txtUID.visibility=View.VISIBLE
+                txtUID.text = it.getString("id")
+                usernametxt.setText(it.getString("username"))
+                emailtxt.setText(it.getString("email"))
+                if(it.getString("type") =="Staff"){
+                    typeSpinner.setSelection(2)
+                }else{
+                    typeSpinner.setSelection(1)
+                }
+                typeSpinner.isEnabled = false
+                typeSpinner.isClickable = false
+                createUserBtn.visibility = View.GONE
+            }
+        },{
+            Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
+        }).post("UID" to UID)
 
     }
 }

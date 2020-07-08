@@ -1,9 +1,11 @@
 package com.example.taructraverse2
 
+
+import android.Manifest
 import android.R.attr.fragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,12 +13,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.taructraverse2.ui.map.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mapbox.android.core.permissions.PermissionsManager
-import com.mapbox.android.core.permissions.PermissionsListener
 
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var permissionManager: PermissionsManager
     private var UID :String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,7 +43,10 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        MapFragment().onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+//        ActivityCompat.requestPermissions(this,permissions,123)
 //        MapFragment.p
             //.onRequestPermissionsResult(requestCode,permissions,grantResults)
     }
