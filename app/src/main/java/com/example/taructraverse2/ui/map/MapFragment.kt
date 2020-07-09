@@ -77,15 +77,19 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
     ): View? {
         Mapbox.getInstance(context!!,
             getString(R.string.mapBox_token))
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        val root= inflater.inflate(R.layout.fragment_map, container, false)
+
+        context?.let { WolfRequest.init(it) }
+        txtLocation = root.findViewById(R.id.editTextLocation)
+        btnSrch = root.findViewById(R.id.btnSrch)
+        startBtn = root.findViewById(R.id.startButton)
+
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let { WolfRequest.init(it) }
-        txtLocation = view.findViewById(R.id.editTextLocation)
-        btnSrch = view.findViewById(R.id.btnSrch)
-        startBtn = view.findViewById(R.id.startButton)
+
         mapView = view.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
@@ -198,7 +202,7 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
             .accessToken(getString(R.string.mapBox_token))
             .origin(origin)
             .destination(destination)
-            .profile("walking")
+            .profile("walking")//allow route in walking area
             .build()
             .getRoute(object : Callback<DirectionsResponse> {
                 override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {

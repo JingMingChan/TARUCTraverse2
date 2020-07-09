@@ -24,7 +24,7 @@ class UserFragment : Fragment() {
     private lateinit var email:TextView
     private lateinit var logout:Button
     private lateinit var updateProfile:Button
-    private lateinit var updateMap:Button
+    private lateinit var addupdateMap:Button
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -44,12 +44,13 @@ class UserFragment : Fragment() {
         username = root.findViewById(R.id.txtUserName)
         email = root.findViewById(R.id.txtEmail)
         logout = root.findViewById(R.id.btnLogOut)
-        updateMap = root.findViewById(R.id.updateMapBtn)
+        addupdateMap = root.findViewById(R.id.addUpdateMapBtn)
         updateProfile = root.findViewById(R.id.updateProfileBtn)
 
         UID = (activity as MainActivity?)?.getUID()
-        updateMap.setOnClickListener {
-
+        addupdateMap.setOnClickListener {
+            val intent = Intent(context, AddUpdateMapActivity::class.java)
+            startActivity(intent)
         }
 
 
@@ -65,26 +66,35 @@ class UserFragment : Fragment() {
             startActivity(intent)
         }
 
-
-
-        if(uid.text.trim().toString().isNullOrEmpty() || username.text.trim().toString().isNullOrEmpty() || email.text.trim().toString().isNullOrEmpty()){
-
-            WolfRequest(Constants.URL_RETRIEVE_USER,{
-                Toast.makeText(context,it.getString("message"), Toast.LENGTH_SHORT).show()
-                if(!it.getBoolean("error")){
-
-                    uid.text = it.getString("id")
-                    username.text = it.getString("username")
-                    email.text = it.getString("email")
-                    if(it.getString("type") =="Staff"){
-                        updateMap.visibility = View.VISIBLE
-                    }
-                }
-            },{
-                Toast.makeText(context,it, Toast.LENGTH_SHORT).show()
-            }).post("UID" to UID)
-        }
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        clearText()
+        getUserDetails()
+    }
+
+    private fun getUserDetails(){
+        WolfRequest(Constants.URL_RETRIEVE_USER,{
+            if(!it.getBoolean("error")){
+
+                uid.text = it.getString("id")
+                username.text = it.getString("username")
+                email.text = it.getString("email")
+                if(it.getString("type") =="Staff"){
+                    addupdateMap.visibility = View.VISIBLE
+                }
+            }
+        },{
+            Toast.makeText(context,it, Toast.LENGTH_SHORT).show()
+        }).post("UID" to UID)
+    }
+
+    private fun clearText(){
+        uid.text = ""
+        username.text = ""
+        email.text = ""
     }
 
 }

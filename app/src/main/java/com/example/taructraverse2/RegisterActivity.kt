@@ -37,6 +37,7 @@ class RegisterActivity : AppCompatActivity() {
         passwordtxt2 = findViewById(R.id.passwordtxt2)
         emailtxt = findViewById(R.id.emailtxt)
         typeSpinner = findViewById(R.id.typeSpinner)
+        createUserBtn = findViewById(R.id.addUserBtn)
 
 
 
@@ -62,7 +63,7 @@ class RegisterActivity : AppCompatActivity() {
                         if(usernametxt.text.trim().toString().isNullOrEmpty()){
                             message +="Username checked: Field cannot be left empty \n"
                         }else{
-                            WolfRequest(Constants.URL_RETRIEVE_USER,{
+                            WolfRequest(Constants.URL_UPDATE_USER,{
                                 message +=it.getString("message")+"\n"
                             },{
                                 message +=it+"\n"
@@ -74,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
                         if(emailtxt.text.trim().toString().isNullOrEmpty()){
                             message +="Email checked: Field cannot be left empty \n"
                         }else{
-                            WolfRequest(Constants.URL_RETRIEVE_USER,{
+                            WolfRequest(Constants.URL_UPDATE_USER,{
                                 message +=it.getString("message")+"\n"
                             },{
                                 message +=it+"\n"
@@ -88,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
                         }else{
 
                             if(passwordtxt.text.trim() == passwordtxt2.text.trim()){
-                                WolfRequest(Constants.URL_RETRIEVE_USER,{
+                                WolfRequest(Constants.URL_UPDATE_USER,{
                                     message +=it.getString("message")+"\n"
                                 },{
                                     message +=it+"\n"
@@ -98,15 +99,19 @@ class RegisterActivity : AppCompatActivity() {
                             }
                         }
                     }
+
                     if (message != ""){
                         Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(this,"Update Successful",Toast.LENGTH_SHORT).show()
+                        finish()
                     }
 
                 }
 
             }
         }else{
-            createUserBtn = findViewById(R.id.addUserBtn)
+
             createUserBtn.setOnClickListener {
 
                 if(usernametxt.text.toString().isEmpty() || passwordtxt.text.toString().isEmpty() || passwordtxt2.text.toString().isEmpty() || emailtxt.text.toString().isEmpty()){
@@ -152,9 +157,9 @@ class RegisterActivity : AppCompatActivity() {
                 usernametxt.setText(it.getString("username"))
                 emailtxt.setText(it.getString("email"))
                 if(it.getString("type") =="Staff"){
-                    typeSpinner.setSelection(2)
-                }else{
                     typeSpinner.setSelection(1)
+                }else{
+                    typeSpinner.setSelection(0)
                 }
                 typeSpinner.isEnabled = false
                 typeSpinner.isClickable = false
