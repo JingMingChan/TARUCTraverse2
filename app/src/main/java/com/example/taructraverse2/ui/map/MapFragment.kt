@@ -344,8 +344,8 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
     }
 
 

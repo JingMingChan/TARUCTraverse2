@@ -48,6 +48,7 @@ class UserFragment : Fragment() {
         updateProfile = root.findViewById(R.id.updateProfileBtn)
 
         UID = (activity as MainActivity?)?.getUID()
+
         addupdateMap.setOnClickListener {
             val intent = Intent(context, AddUpdateMapActivity::class.java)
             startActivity(intent)
@@ -62,7 +63,7 @@ class UserFragment : Fragment() {
 
         updateProfile.setOnClickListener {
             val intent = Intent(context, RegisterActivity::class.java)
-            intent.putExtra("UID",UID)//0 why????
+            intent.putExtra("UID",UID)
             startActivity(intent)
         }
 
@@ -70,9 +71,9 @@ class UserFragment : Fragment() {
     }
 
     override fun onResume() {
-        super.onResume()
-        clearText()
         getUserDetails()
+        super.onResume()
+
     }
 
     private fun getUserDetails(){
@@ -91,10 +92,5 @@ class UserFragment : Fragment() {
         }).post("UID" to UID)
     }
 
-    private fun clearText(){
-        uid.text = ""
-        username.text = ""
-        email.text = ""
-    }
 
 }

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddUpdateMapActivity"></activity>
+        <activity android:name=".longLatActivity"></activity>
+        <activity android:name=".AddUpdateMapActivity" />
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" />
