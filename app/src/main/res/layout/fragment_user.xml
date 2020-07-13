@@ -6,15 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.user.UserFragment">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/profileView"
         android:layout_width="157dp"
         android:layout_height="153dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/textView"

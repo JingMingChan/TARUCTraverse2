@@ -1,23 +1,26 @@
 package com.example.taructraverse2.ui.user
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.taructraverse2.*
+import com.google.firebase.storage.FirebaseStorage
 
 
 class UserFragment : Fragment() {
 
-    private lateinit var userModel: UserModel
+
     private var UID :String? = null
     private lateinit var uid:TextView
     private lateinit var username:TextView
@@ -25,20 +28,19 @@ class UserFragment : Fragment() {
     private lateinit var logout:Button
     private lateinit var updateProfile:Button
     private lateinit var addupdateMap:Button
+    private lateinit var profileImg:ImageView
+
+    private lateinit var storage: FirebaseStorage
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        userModel =
-                ViewModelProviders.of(this).get(UserModel::class.java)
         val root = inflater.inflate(R.layout.fragment_user, container, false)
-
-        userModel.text.observe(viewLifecycleOwner, Observer {
-
-        })
         context?.let { WolfRequest.init(it) }
+
+        storage = FirebaseStorage.getInstance()
 
         uid = root.findViewById(R.id.txtUID)
         username = root.findViewById(R.id.txtUserName)
@@ -46,8 +48,14 @@ class UserFragment : Fragment() {
         logout = root.findViewById(R.id.btnLogOut)
         addupdateMap = root.findViewById(R.id.addUpdateMapBtn)
         updateProfile = root.findViewById(R.id.updateProfileBtn)
+        profileImg=root.findViewById(R.id.profileView)
 
         UID = (activity as MainActivity?)?.getUID()
+
+        loadImg()
+        profileImg.setOnClickListener {
+            pickFromGallery(1)
+        }
 
         addupdateMap.setOnClickListener {
             val intent = Intent(context, AddUpdateMapActivity::class.java)
@@ -68,6 +76,55 @@ class UserFragment : Fragment() {
         }
 
         return root
+    }
+
+    private fun loadImg(){
+
+
+        val profileStorageRef = storage.reference.child("User/"+UID+"/profile.jpg")
+
+        val ONE_MEGABYTE = (1024 * 1024).toLong()
+
+        profileStorageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
+            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            profileImg.setImageBitmap(bmp)
+        }.addOnFailureListener {
+                profileImg.setImageResource(R.drawable.ic_message)
+            }
+
+    }
+
+    private fun pickFromGallery(int: Int) {
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        val mimeTypes = arrayOf("image/jpeg", "image/png")
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        startActivityForResult(intent, int)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(data != null && data.getData() != null && resultCode == Activity.RESULT_OK){
+
+            val dataUri = data.data as Uri
+
+            val storageRef = storage.reference.child("User/"+UID)
+
+            if(requestCode == 1){
+                profileImg.setImageURI(dataUri)
+
+                val profileRef = storageRef.child("profile.jpg")
+
+                profileRef.putFile(dataUri).addOnSuccessListener {
+                    Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener{
+                    Toast.makeText(context, "Image Not Saved!", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
     }
 
     override fun onResume() {

@@ -3,6 +3,7 @@ package com.example.taructraverse2.ui.chatbot
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +59,7 @@ class ChatbotFragment : Fragment(){
             sendMessage(it)
         }
 
-        initPresenter()
+
 
         return root
     }
@@ -109,7 +110,8 @@ class ChatbotFragment : Fragment(){
         chatLayout.addView(layout) // move focus to text view to automatically make it scroll up if softfocus
 
         val tv = layout.findViewById<TextView>(R.id.chatMsg)
-        tv.setText(message)
+        tv.text = message
+        Linkify.addLinks(tv,Linkify.ALL)
         layout.requestFocus()
         txtMessage.requestFocus()
 
@@ -137,6 +139,11 @@ class ChatbotFragment : Fragment(){
         return inflater.inflate(R.layout.bot_message, null) as FrameLayout?
     }
 
+    override fun onResume() {
+        initPresenter()
+        super.onResume()
+
+    }
     override fun onPause() {
         super.onPause()
         sessionsClient?.shutdown()

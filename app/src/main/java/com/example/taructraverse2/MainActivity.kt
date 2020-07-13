@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_map, R.id.navigation_chatbot, R.id.navigation_user))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        //navView.selectedItemId = R.id.navigation_map
     }
 
     fun getUID():String?{

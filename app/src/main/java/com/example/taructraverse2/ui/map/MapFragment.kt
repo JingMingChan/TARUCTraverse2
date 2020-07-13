@@ -252,7 +252,7 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
                     startBtn.visibility = View.VISIBLE
                     mapboxGeocoding.cancelCall()
 
-                }else if(results.size > 1) {//if more than 1 address found on mapboxgeocoding, use own db point to query
+                }else if(results.size > 1 || results.size == 0) {//if more than 1 address found on mapboxgeocoding, use own db point to query
                     val destination = Point.fromLngLat(long, lat)
                     getRoute(origin, destination)
                     startBtn.visibility = View.VISIBLE
