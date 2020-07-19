@@ -3,10 +3,10 @@ package com.example.taructraverse2
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -17,6 +17,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var registerBtn:Button
     private lateinit var userName:EditText
     private lateinit var pass:EditText
+    private lateinit var forgotPass:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         registerBtn = findViewById(R.id.registBtn)
         userName = findViewById(R.id.username)
         pass = findViewById(R.id.password)
+        forgotPass = findViewById(R.id.forgotPassTxt)
 
 
         userName.setOnFocusChangeListener { v, hasFocus ->
@@ -39,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             if(userName.text.trim().toString().isEmpty() || pass.text.trim().toString().isEmpty()){
                 Toast.makeText(this,"Please enter Username and password", Toast.LENGTH_SHORT).show()
             }else{
-                login()
+                login(userName.text.trim().toString(),pass.text.trim().toString())
             }
         }
 
@@ -47,13 +49,15 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+        forgotPass.setOnClickListener {
+            val intent = Intent(this, ForgotPassword::class.java)
+            startActivity(intent)
+        }
     }
 
 
-    fun login(){
-        val username = userName.text.trim().toString()
-        val password = pass.text.trim().toString()
-
+    fun login(username :String, password:String){
         WolfRequest(Constants.URL_LOGIN,{
             Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
             if(!it.getBoolean("error")){

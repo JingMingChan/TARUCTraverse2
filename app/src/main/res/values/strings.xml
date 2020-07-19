@@ -10,6 +10,7 @@
     <string name="prompt_type">Choose User Type</string>
     <string name="prompt_mapID">Choose Map ID Type</string>
     <string name="user_location_permission_not_granted">App need to have permission location for better functionality</string>
+    <string name="forgot_pass"><u>Forgot Password?</u></string>
 
 
     <string-array name="type_arrays">

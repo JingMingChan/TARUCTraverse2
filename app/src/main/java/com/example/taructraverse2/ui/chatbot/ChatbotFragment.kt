@@ -1,13 +1,11 @@
 package com.example.taructraverse2.ui.chatbot
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.taructraverse2.R
@@ -59,8 +57,6 @@ class ChatbotFragment : Fragment(){
             sendMessage(it)
         }
 
-
-
         return root
     }
 
@@ -83,7 +79,7 @@ class ChatbotFragment : Fragment(){
 
     fun sendMessage(view:View){
         val msg = txtMessage.text.toString()
-        //var context = context as Context
+
         if(msg.trim().isEmpty()){
             Toast.makeText(context, "Please enter Message!", Toast.LENGTH_LONG).show()
         }else{
@@ -92,8 +88,6 @@ class ChatbotFragment : Fragment(){
             txtMessage.text.clear()
 
             val queryInput = QueryInput.newBuilder().setText(TextInput.newBuilder().setText(msg).setLanguageCode("en-US")).build()
-            //var context = th as Context
-
 
             RequestJavaV2Task(this, session, sessionsClient, queryInput).execute()
         }
@@ -114,7 +108,6 @@ class ChatbotFragment : Fragment(){
         Linkify.addLinks(tv,Linkify.ALL)
         layout.requestFocus()
         txtMessage.requestFocus()
-
     }
 
     fun callbackV2(response: DetectIntentResponse?) {

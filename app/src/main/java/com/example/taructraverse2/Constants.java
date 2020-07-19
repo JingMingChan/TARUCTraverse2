@@ -2,7 +2,7 @@ package com.example.taructraverse2;
 
 public class Constants {
 
-    private static final String ROOT_URL="http://192.168.0.2:8081/taruc_traverse/v1/";
+    private static final String ROOT_URL="https://taruc-traverse.000webhostapp.com/taruc_traverse/v1/";
 
     public static final String URL_REGISTER = ROOT_URL+"register.php";
     public static final String URL_LOGIN = ROOT_URL+"userLogin.php";
@@ -13,5 +13,6 @@ public class Constants {
     public static final String URL_GET_LOCATION = ROOT_URL+"getLocation.php";
     public static final String URL_ADD_LOCATION = ROOT_URL+"addLocation.php";
     public static final String URL_UPDATE_LOCATION = ROOT_URL+"updateLocation.php";
+    public static final String URL_FORGOT_PASSWORD = ROOT_URL+"forgotPass.php";
 
 }

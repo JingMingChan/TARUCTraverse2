@@ -118,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this,"Field cannot be left empty",Toast.LENGTH_SHORT).show()
                 }else{
                     if(passwordtxt.text.trim() == passwordtxt2.text.trim()){
-                       register()
+                       register(usernametxt.text.toString().trim(),passwordtxt.text.toString().trim(),emailtxt.text.toString().trim(),typeSpinner.selectedItem.toString().trim())
                     }else{
                         Toast.makeText(this,"Confirmation password is not the same",Toast.LENGTH_SHORT).show()
                     }
@@ -130,12 +130,7 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun register(){
-        val username = usernametxt.text.toString().trim()
-        val password = passwordtxt.text.toString().trim()
-        val email = emailtxt.text.toString().trim()
-        val type = typeSpinner.selectedItem.toString().trim()
-
+    private fun register(username :String, password:String, email:String, type:String){
         WolfRequest(Constants.URL_REGISTER,{
             Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
             if(!it.getBoolean("error")){
