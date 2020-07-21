@@ -1,6 +1,5 @@
 package com.example.taructraverse2
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -18,10 +17,11 @@ class ForgotPassword : AppCompatActivity() {
         genTempPass = findViewById(R.id.genTempPassBtn)
         email = findViewById(R.id.emailTxt)
 
-        if(email.text.trim().toString().isEmpty()){
-            Toast.makeText(this,"Please enter Email", Toast.LENGTH_SHORT).show()
-        }else{
-            genTempPass.setOnClickListener {
+
+        genTempPass.setOnClickListener {
+            if(email.text.trim().toString().isEmpty()){
+                Toast.makeText(this,"Please enter Email", Toast.LENGTH_SHORT).show()
+            }else{
                 WolfRequest(Constants.URL_FORGOT_PASSWORD,{
                     Toast.makeText(this,it.getString("message"), Toast.LENGTH_SHORT).show()
                     if(!it.getBoolean("error")){
@@ -32,6 +32,5 @@ class ForgotPassword : AppCompatActivity() {
                 }).post("email" to email.text.trim().toString())
             }
         }
-
     }
 }

@@ -1,8 +1,8 @@
 package com.example.taructraverse2;
 
 public class Constants {
-
-    private static final String ROOT_URL="https://taruc-traverse.000webhostapp.com/taruc_traverse/v1/";
+    //private static final String ROOT_URL="https://taruc-traverse.000webhostapp.com/taruc_traverse/v1/";
+    private static final String ROOT_URL="https://taruc-tarverse2.000webhostapp.com/taruc_traverse/v1/";
 
     public static final String URL_REGISTER = ROOT_URL+"register.php";
     public static final String URL_LOGIN = ROOT_URL+"userLogin.php";

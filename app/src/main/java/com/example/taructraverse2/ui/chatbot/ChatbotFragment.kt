@@ -104,7 +104,11 @@ class ChatbotFragment : Fragment(){
         chatLayout.addView(layout) // move focus to text view to automatically make it scroll up if softfocus
 
         val tv = layout.findViewById<TextView>(R.id.chatMsg)
-        tv.text = message
+        val mesgWithFL = System.getProperty("line.separator")?.let {
+            message.replace("\\n",
+                it,true)
+        }
+        tv.text = mesgWithFL
         Linkify.addLinks(tv,Linkify.ALL)
         layout.requestFocus()
         txtMessage.requestFocus()
