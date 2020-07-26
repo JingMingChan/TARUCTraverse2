@@ -18,8 +18,6 @@ import java.util.*
 
 
 class ChatbotFragment : Fragment(){
-    //private lateinit var adapter: ChatAdapter
-    //private lateinit var messageList:RecyclerView
     private lateinit var chatLayout:LinearLayout
     private lateinit var txtMessage:EditText
     private lateinit var btnSend:Button
@@ -39,24 +37,12 @@ class ChatbotFragment : Fragment(){
 
         val scrollview: ScrollView = root.findViewById(R.id.chatScrollView)
         scrollview.post { scrollview.fullScroll(ScrollView.FOCUS_DOWN) }
-        chatLayout = root.findViewById(R.id.chatLayout);
-
-        //messageList = root.findViewById(R.id.messageRecycle)
+        chatLayout = root.findViewById(R.id.chatLayout)
         txtMessage = root.findViewById(R.id.queryEditText)
         btnSend =root.findViewById(R.id.sendBtn)
-//        var context = activity as Context
-//
-//
-//        messageList.setHasFixedSize(true)
-//        val layoutManager = LinearLayoutManager(context)
-//        layoutManager.stackFromEnd = true
-//        messageList.layoutManager = LinearLayoutManager(context)
-
-
         btnSend.setOnClickListener {
             sendMessage(it)
         }
-
         return root
     }
 

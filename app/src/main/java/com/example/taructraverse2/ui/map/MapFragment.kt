@@ -1,6 +1,5 @@
 package com.example.taructraverse2.ui.map
 
-import android.Manifest
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -17,12 +16,9 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.taructraverse2.Constants
-import com.example.taructraverse2.MainActivity
 import com.example.taructraverse2.R
 import com.example.taructraverse2.WolfRequest
 import com.mapbox.android.core.location.*
-import com.mapbox.android.core.permissions.PermissionsListener
-import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
@@ -52,11 +48,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.ref.WeakReference
 
-class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMap.OnMapClickListener {
+class MapFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener {
 
     private lateinit var mapView: MapView
     private lateinit var map: MapboxMap
-    private lateinit var permissionManager: PermissionsManager
     private lateinit var txtLocation: EditText
     private lateinit var btnSrch: ImageButton
     private lateinit var currentRoute: DirectionsRoute
@@ -116,7 +111,7 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
             }
 
             startBtn.setOnClickListener{
-                val simulateRoute = true
+                val simulateRoute = false
                 val options= NavigationLauncherOptions.builder()
                     .directionsRoute(currentRoute)
                     .shouldSimulateRoute(simulateRoute)
@@ -128,42 +123,37 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
         map.addOnMapClickListener(this)
     }
 
-    @SuppressWarnings("MissingPermission")
+    //@SuppressWarnings("MissingPermission")
     fun enableLocationComponent(style:Style){
-        if (PermissionsManager.areLocationPermissionsGranted(context)) {
-            locationComponent = map.locationComponent
-            val locationComponentOptions = LocationComponentOptions.builder(context!!)
-                .foregroundDrawable(R.drawable.mapbox_user_icon)
-                .foregroundDrawableStale(R.drawable.mapbox_user_icon_stale)
-                .bearingDrawable(R.drawable.mapbox_user_bearing_icon)
-                .accuracyAlpha(.3f)
-                .pulseEnabled(true)
-                .pulseColor(Color.YELLOW)
-                .pulseAlpha(.4f)
-                .build()
+        locationComponent = map.locationComponent
+        val locationComponentOptions = LocationComponentOptions.builder(context!!)
+            .foregroundDrawable(R.drawable.mapbox_user_icon)
+            .foregroundDrawableStale(R.drawable.mapbox_user_icon_stale)
+            .bearingDrawable(R.drawable.mapbox_user_bearing_icon)
+            .accuracyAlpha(.3f)
+            .pulseEnabled(true)
+            .pulseColor(Color.YELLOW)
+            .pulseAlpha(.4f)
+            .build()
 
-            val locationComponentActivationOptions = LocationComponentActivationOptions
-                .builder(context!!, style)
-                .locationComponentOptions(locationComponentOptions)
-                .useDefaultLocationEngine(false)
-                .build()
+        val locationComponentActivationOptions = LocationComponentActivationOptions
+            .builder(context!!, style)
+            .locationComponentOptions(locationComponentOptions)
+            .useDefaultLocationEngine(false)
+            .build()
 
-            locationComponent?.activateLocationComponent(locationComponentActivationOptions)
+        locationComponent?.activateLocationComponent(locationComponentActivationOptions)
 
-            // Enable to make component visible
-            locationComponent?.isLocationComponentEnabled = true
+        // Enable to make component visible
+        locationComponent?.isLocationComponentEnabled = true
 
-            // Set the component's camera mode
-            locationComponent?.cameraMode = CameraMode.TRACKING_GPS
+        // Set the component's camera mode
+        locationComponent?.cameraMode = CameraMode.TRACKING_GPS
 
-            // Set the component's render mode
-            locationComponent?.renderMode = RenderMode.COMPASS
+        // Set the component's render mode
+        locationComponent?.renderMode = RenderMode.COMPASS
 
-            initializeLocationEngine()
-        }else{
-            permissionManager = PermissionsManager(this)
-            permissionManager.requestLocationPermissions(requireActivity())
-        }
+        initializeLocationEngine()
     }
 
     fun initializeLocationEngine(){
@@ -289,25 +279,6 @@ class MapFragment : Fragment(),PermissionsListener, OnMapReadyCallback, MapboxMa
         getRoute(origin, destination)
         startBtn.visibility = View.VISIBLE
         return true
-    }
-
-    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        //when user denied access location, give action
-        Toast.makeText(context, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onPermissionResult(granted: Boolean) {
-        if (granted) {
-           map.getStyle { style -> enableLocationComponent(style) }
-        } else {
-            Toast.makeText(context, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show()
-            MainActivity().finish()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        permissionManager.onRequestPermissionsResult(requestCode,permissions,grantResults)
-
     }
 
     override fun onStart() {

@@ -9,15 +9,19 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), PermissionsListener {
 
     private lateinit var loginBtn:Button
     private lateinit var registerBtn:Button
     private lateinit var userName:EditText
     private lateinit var pass:EditText
     private lateinit var forgotPass:TextView
+
+    private lateinit var permissionManager: PermissionsManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -28,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
         userName = findViewById(R.id.username)
         pass = findViewById(R.id.password)
         forgotPass = findViewById(R.id.forgotPassTxt)
-
 
         userName.setOnFocusChangeListener { v, hasFocus ->
             if(!hasFocus){
@@ -54,6 +57,8 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, ForgotPassword::class.java)
             startActivity(intent)
         }
+
+        checkPermission()
     }
 
 
@@ -69,5 +74,29 @@ class LoginActivity : AppCompatActivity() {
         },{
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }).post("username" to username, "password" to password)
+    }
+
+    fun checkPermission(){
+        if (!PermissionsManager.areLocationPermissionsGranted(this)) {
+            permissionManager = PermissionsManager(this)
+            permissionManager.requestLocationPermissions(this)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        permissionManager.onRequestPermissionsResult(requestCode,permissions,grantResults)
+    }
+
+
+    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+        if (!PermissionsManager.areLocationPermissionsGranted(this)) {
+            Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onPermissionResult(granted: Boolean) {
+        if (!granted) {
+            finish()
+        }
     }
 }
