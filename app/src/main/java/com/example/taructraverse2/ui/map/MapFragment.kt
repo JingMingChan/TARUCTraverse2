@@ -49,13 +49,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener
 
     private lateinit var mapView: MapView
     private lateinit var map: MapboxMap
-    //private lateinit var txtLocation: EditText
     private lateinit var txtLocation:AutoCompleteTextView
     private lateinit var btnSrch: ImageButton
     private lateinit var currentRoute: DirectionsRoute
     private lateinit var startBtn: Button
 
-    private var separated:List<String>?= null
+    private var newBlockName:String= "Others"
     private var arrayAdapter:ArrayAdapter<String>? = null
 
     private var locationEngine: LocationEngine? = null
@@ -82,9 +81,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener
             if(!it.getBoolean("error")){
 
                 val blockName = it.getString("blockName").trim().split("||")
-//                blockName.forEach { n -> separated = n.trim().split(",")}
-//                separated: List<String> = blockName!!.split(",|\\||")
-                arrayAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, blockName)
+                blockName.forEach { n -> newBlockName += ",$n" }
+
+                val separated: List<String> = newBlockName.trim().split(",")
+                arrayAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, separated)
                 if(!arrayAdapter!!.isEmpty){
                     txtLocation.setAdapter(arrayAdapter)
                 }
