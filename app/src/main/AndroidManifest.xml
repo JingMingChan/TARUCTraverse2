@@ -17,7 +17,7 @@
         <activity android:name=".AddUpdateMapActivity" />
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/title_activity_register" />
+            android:label="Profile" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginActivity"

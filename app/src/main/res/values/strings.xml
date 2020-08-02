@@ -5,7 +5,7 @@
     <string name="title_user">User</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Register</string>
-    <string name="prompt_username">User Name</string>
+    <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_type">Choose User Type</string>
     <string name="prompt_mapID">Choose Map ID Type</string>

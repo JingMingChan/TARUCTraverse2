@@ -152,4 +152,12 @@ class AddUpdateMapActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun checklatlong(){
+        val latitude = latTxt.text.toString().toDouble()
+        val longitude = longTxt.text.toString().toDouble()
+        if(longitude>101.737927 && longitude<101.724101 && latitude>3.219567 && latitude<3.212926){
+
+        }
+    }
 }

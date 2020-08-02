@@ -22,16 +22,13 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extras = this.intent.extras
-        UID = extras?.getString("UID")
-        if(!UID.isNullOrEmpty()){
-            title = "Edit Proflie";
-        }
 
         setContentView(R.layout.activity_register)
 
         WolfRequest.init(this)
 
+        val extras = this.intent.extras
+        UID = extras?.getString("UID")
         usernametxt = findViewById(R.id.usernametxt)
         passwordtxt = findViewById(R.id.passwordtxt)
         passwordtxt2 = findViewById(R.id.passwordtxt2)
@@ -106,9 +103,7 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(this,"Update Successful",Toast.LENGTH_SHORT).show()
                         finish()
                     }
-
                 }
-
             }
         }else{
 
@@ -124,7 +119,6 @@ class RegisterActivity : AppCompatActivity() {
                     }
 
                 }
-
             }
         }
 
@@ -139,7 +133,6 @@ class RegisterActivity : AppCompatActivity() {
         },{
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }).post("username" to username, "password" to password, "type" to type, "email" to email)
-
     }
 
     private fun showProfile(){
@@ -163,6 +156,5 @@ class RegisterActivity : AppCompatActivity() {
         },{
             Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
         }).post("UID" to UID)
-
     }
 }

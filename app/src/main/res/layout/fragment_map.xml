@@ -20,8 +20,8 @@
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
-    <EditText
-        android:id="@+id/editTextLocation"
+    <AutoCompleteTextView
+        android:id="@+id/autoTextLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,13 +29,29 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:ems="10"
         android:hint="Campus Location..."
-        android:inputType="textPostalAddress"
+        android:inputType="textAutoComplete"
         android:background="#ffffff"
+        android:popupBackground="#ffffff"
         mapbox:layout_constraintEnd_toStartOf="@+id/btnSrch"
         mapbox:layout_constraintStart_toStartOf="parent"
         mapbox:layout_constraintTop_toTopOf="parent" />
+<!--    <EditText-->
+<!--        android:id="@+id/editTextLocation"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginLeft="8dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:layout_marginRight="8dp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Campus Location..."-->
+<!--        android:inputType="textPostalAddress"-->
+<!--        android:background="#ffffff"-->
+<!--        mapbox:layout_constraintEnd_toStartOf="@+id/btnSrch"-->
+<!--        mapbox:layout_constraintStart_toStartOf="parent"-->
+<!--        mapbox:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageButton
         android:id="@+id/btnSrch"
@@ -44,9 +60,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:src="@android:drawable/ic_menu_search"
-        mapbox:layout_constraintBottom_toBottomOf="@+id/editTextLocation"
+        mapbox:layout_constraintBottom_toBottomOf="@+id/autoTextLocation"
         mapbox:layout_constraintEnd_toEndOf="parent"
-        mapbox:layout_constraintTop_toTopOf="@+id/editTextLocation" />
+        mapbox:layout_constraintTop_toTopOf="@+id/autoTextLocation" />
 
     <Button
         android:id="@+id/startButton"

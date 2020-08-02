@@ -14,5 +14,6 @@ public class Constants {
     public static final String URL_ADD_LOCATION = ROOT_URL+"addLocation.php";
     public static final String URL_UPDATE_LOCATION = ROOT_URL+"updateLocation.php";
     public static final String URL_FORGOT_PASSWORD = ROOT_URL+"forgotPass.php";
+    public static final String URL_GET_BLOCKNAME = ROOT_URL+"getBlockName.php";
 
 }

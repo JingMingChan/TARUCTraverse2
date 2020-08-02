@@ -27,6 +27,7 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
         setContentView(R.layout.activity_login)
 
         WolfRequest.init(this)
+
         loginBtn = findViewById(R.id.loginBtn)
         registerBtn = findViewById(R.id.registBtn)
         userName = findViewById(R.id.username)
@@ -42,7 +43,7 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
 
         loginBtn.setOnClickListener(){
             if(userName.text.trim().toString().isEmpty() || pass.text.trim().toString().isEmpty()){
-                Toast.makeText(this,"Please enter Username and password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Please enter Email and password", Toast.LENGTH_SHORT).show()
             }else{
                 login(userName.text.trim().toString(),pass.text.trim().toString())
             }
@@ -57,7 +58,6 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
             val intent = Intent(this, ForgotPassword::class.java)
             startActivity(intent)
         }
-
         checkPermission()
     }
 
@@ -89,7 +89,7 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
 
 
     override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        if (!PermissionsManager.areLocationPermissionsGranted(this)) {
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
             Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show()
         }
     }

@@ -10,10 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.taructraverse2.Constants
 import com.example.taructraverse2.R
@@ -52,10 +49,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener
 
     private lateinit var mapView: MapView
     private lateinit var map: MapboxMap
-    private lateinit var txtLocation: EditText
+    //private lateinit var txtLocation: EditText
+    private lateinit var txtLocation:AutoCompleteTextView
     private lateinit var btnSrch: ImageButton
     private lateinit var currentRoute: DirectionsRoute
     private lateinit var startBtn: Button
+
+    private var separated:List<String>?= null
+    private var arrayAdapter:ArrayAdapter<String>? = null
 
     private var locationEngine: LocationEngine? = null
     private var locationComponent: LocationComponent? = null
@@ -75,7 +76,23 @@ class MapFragment : Fragment(), OnMapReadyCallback, MapboxMap.OnMapClickListener
         val root= inflater.inflate(R.layout.fragment_map, container, false)
 
         context?.let { WolfRequest.init(it) }
-        txtLocation = root.findViewById(R.id.editTextLocation)
+        txtLocation = root.findViewById(R.id.autoTextLocation)
+
+        WolfRequest(Constants.URL_GET_BLOCKNAME,{
+            if(!it.getBoolean("error")){
+
+                val blockName = it.getString("blockName").trim().split("||")
+//                blockName.forEach { n -> separated = n.trim().split(",")}
+//                separated: List<String> = blockName!!.split(",|\\||")
+                arrayAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, blockName)
+                if(!arrayAdapter!!.isEmpty){
+                    txtLocation.setAdapter(arrayAdapter)
+                }
+            }
+        },{
+            Toast.makeText(context,it, Toast.LENGTH_SHORT).show()
+        }).post("1" to "1")
+
         btnSrch = root.findViewById(R.id.btnSrch)
         startBtn = root.findViewById(R.id.startButton)
 
