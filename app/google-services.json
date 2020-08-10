@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "31393639728",
-    "firebase_url": "https://taruc-traverse-whfplx.firebaseio.com",
-    "project_id": "taruc-traverse-whfplx",
-    "storage_bucket": "taruc-traverse-whfplx.appspot.com"
+    "project_number": "97383986531",
+    "firebase_url": "https://taructraverse2.firebaseio.com",
+    "project_id": "taructraverse2",
+    "storage_bucket": "taructraverse2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:31393639728:android:4340f1ec8381b65c32acf5",
+        "mobilesdk_app_id": "1:97383986531:android:9351ca99f6ab5827910f56",
         "android_client_info": {
           "package_name": "com.example.taructraverse2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "31393639728-ni9tkdmdea45dqvq5ahmca0ce156fonb.apps.googleusercontent.com",
+          "client_id": "97383986531-b3fq4mqko26mste2n237gkn7tg0efnvn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCi3_lIcCUEWvuett_m5Qzb-sROY-o2pzY"
+          "current_key": "AIzaSyAowmpLS8JGH9cxQZFUCv-QwV1-3JEo-8E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "31393639728-ni9tkdmdea45dqvq5ahmca0ce156fonb.apps.googleusercontent.com",
+              "client_id": "97383986531-b3fq4mqko26mste2n237gkn7tg0efnvn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
