@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.taructraverse2.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 
 
@@ -27,6 +28,7 @@ class UserFragment : Fragment() {
     private lateinit var profileImg:ImageView
 
     private lateinit var storage: FirebaseStorage
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -36,6 +38,7 @@ class UserFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_user, container, false)
         context?.let { WolfRequest.init(it) }
 
+        auth = FirebaseAuth.getInstance()
         storage = FirebaseStorage.getInstance()
 
         uid = root.findViewById(R.id.txtUID)
@@ -60,6 +63,7 @@ class UserFragment : Fragment() {
 
 
         logout.setOnClickListener {
+            auth.signOut()
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
             activity?.finish()
@@ -75,8 +79,6 @@ class UserFragment : Fragment() {
     }
 
     private fun loadImg(){
-
-
         val profileStorageRef = storage.reference.child("User/"+UID+"/profile.jpg")
 
         val ONE_MEGABYTE = (1024 * 1024).toLong()
@@ -87,11 +89,9 @@ class UserFragment : Fragment() {
         }.addOnFailureListener {
                 profileImg.setImageResource(R.drawable.ic_message)
             }
-
     }
 
     private fun pickFromGallery(int: Int) {
-
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         val mimeTypes = arrayOf("image/jpeg", "image/png")
@@ -118,19 +118,18 @@ class UserFragment : Fragment() {
                 }.addOnFailureListener{
                     Toast.makeText(context, "Image Not Saved!", Toast.LENGTH_SHORT).show()
                 }
-
             }
         }
     }
 
     override fun onResume() {
-        getUserDetails()
         super.onResume()
-
+        getUserDetails()
     }
 
-    private fun getUserDetails(){
+    fun getUserDetails(){
         WolfRequest(Constants.URL_RETRIEVE_USER,{
+            Toast.makeText(context,it.getString("message"), Toast.LENGTH_SHORT).show()
             if(!it.getBoolean("error")){
 
                 uid.text = it.getString("id")

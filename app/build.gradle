@@ -39,7 +39,13 @@ android {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/INDEX.LIST'
     }
-
+//    configurations {
+//        //implementation.exclude module:'proto-google-common-protos'
+//        implementation.exclude module:'protolite-well-known-types'
+//        //implementation.exclude module:'guava'
+//        //implementation.exclude module:'protobuf-lite'
+//        implementation.exclude module:'protobuf-javalite'
+//    }
 }
 
 dependencies {
@@ -61,6 +67,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
     //firebase storage
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     //local or webhost database connection

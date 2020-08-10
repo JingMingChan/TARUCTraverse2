@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 
@@ -17,24 +18,24 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
 
     private lateinit var loginBtn:Button
     private lateinit var registerBtn:Button
-    private lateinit var userName:EditText
+    private lateinit var userEmail:EditText
     private lateinit var pass:EditText
     private lateinit var forgotPass:TextView
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var permissionManager: PermissionsManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        WolfRequest.init(this)
-
+        auth = FirebaseAuth.getInstance()
         loginBtn = findViewById(R.id.loginBtn)
         registerBtn = findViewById(R.id.registBtn)
-        userName = findViewById(R.id.username)
+        userEmail = findViewById(R.id.useremail)
         pass = findViewById(R.id.password)
         forgotPass = findViewById(R.id.forgotPassTxt)
 
-        userName.setOnFocusChangeListener { v, hasFocus ->
+        userEmail.setOnFocusChangeListener { v, hasFocus ->
             if(!hasFocus){
                 val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
@@ -42,10 +43,10 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
         }
 
         loginBtn.setOnClickListener(){
-            if(userName.text.trim().toString().isEmpty() || pass.text.trim().toString().isEmpty()){
+            if(userEmail.text.trim().toString().isEmpty() || pass.text.trim().toString().isEmpty()){
                 Toast.makeText(this,"Please enter Email and password", Toast.LENGTH_SHORT).show()
             }else{
-                login(userName.text.trim().toString(),pass.text.trim().toString())
+                login(userEmail.text.trim().toString(),pass.text.trim().toString())
             }
         }
 
@@ -62,18 +63,31 @@ class LoginActivity : AppCompatActivity(), PermissionsListener {
     }
 
 
-    fun login(username :String, password:String){
-        WolfRequest(Constants.URL_LOGIN,{
-            Toast.makeText(this,it.getString("message"),Toast.LENGTH_SHORT).show()
-            if(!it.getBoolean("error")){
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("UID",it.getInt("id"))
-                startActivity(intent)
-                finish()
+    fun login(email :String, password:String){
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    if (user != null) {
+                        if(user.isEmailVerified){
+                            Toast.makeText(baseContext, "Login Successful",
+                                Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("UID",user.uid.toString())//fireID
+                            startActivity(intent)
+                            finish()
+                        }else{
+                            Toast.makeText(baseContext, "Please Verify your email.",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                } else {
+                    Toast.makeText(baseContext, "Login Failed, Check your email or password.",
+                        Toast.LENGTH_SHORT).show()
+                }
             }
-        },{
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-        }).post("username" to username, "password" to password)
     }
 
     fun checkPermission(){
