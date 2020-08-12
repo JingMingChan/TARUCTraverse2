@@ -5,10 +5,14 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.taructraverse2.*
 import com.google.firebase.auth.FirebaseAuth
@@ -19,14 +23,12 @@ class UserFragment : Fragment() {
 
 
     private var UID :String? = null
-    private lateinit var uid:TextView
     private lateinit var username:TextView
     private lateinit var email:TextView
     private lateinit var logout:Button
-    private lateinit var updateProfile:Button
     private lateinit var addupdateMap:Button
     private lateinit var profileImg:ImageView
-
+    private lateinit var editLogin:Button
     private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
 
@@ -41,16 +43,16 @@ class UserFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         storage = FirebaseStorage.getInstance()
 
-        uid = root.findViewById(R.id.txtUID)
         username = root.findViewById(R.id.txtUserName)
         email = root.findViewById(R.id.txtEmail)
         logout = root.findViewById(R.id.btnLogOut)
         addupdateMap = root.findViewById(R.id.addUpdateMapBtn)
-        updateProfile = root.findViewById(R.id.updateProfileBtn)
         profileImg=root.findViewById(R.id.profileView)
+        editLogin=root.findViewById(R.id.editLoginBtn)
 
         UID = (activity as MainActivity?)?.getUID()
 
+        email.movementMethod = ScrollingMovementMethod()
         loadImg()
         profileImg.setOnClickListener {
             pickFromGallery(1)
@@ -69,11 +71,12 @@ class UserFragment : Fragment() {
             activity?.finish()
         }
 
-        updateProfile.setOnClickListener {
-            val intent = Intent(context, RegisterActivity::class.java)
-            intent.putExtra("UID",UID)
+        editLogin.setOnClickListener {
+            val intent = Intent(context, ForgotPassword::class.java)
+            intent.putExtra("EditType","EditLogin")
             startActivity(intent)
         }
+
 
         return root
     }
@@ -132,7 +135,6 @@ class UserFragment : Fragment() {
             Toast.makeText(context,it.getString("message"), Toast.LENGTH_SHORT).show()
             if(!it.getBoolean("error")){
 
-                uid.text = it.getString("id")
                 username.text = it.getString("username")
                 email.text = it.getString("email")
                 if(it.getString("type") =="Staff"){
